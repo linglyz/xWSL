@@ -31,7 +31,7 @@ if test -r /etc/profile; then
 fi
 
 exec dbus-launch --exit-with-x11 pulseaudio --disable-shm &
-exec dbus-launch --exit-with-x11 startplasma-x11
+exec dbus-launch --exit-with-x11 tilix
 
 # test -x /etc/X11/Xsession && exec /etc/X11/Xsession
 # exec /bin/sh /etc/X11/Xsession
