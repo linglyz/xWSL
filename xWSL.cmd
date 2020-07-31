@@ -1,7 +1,7 @@
 @ECHO OFF
 SET GITORG=DesktopECHO
 SET GITPRJ=xWSL
-SET BASE=https://github.com/%GITORG%/%GITPRJ%/raw/master
+SET BASE=https://github.com/%GITORG%/%GITPRJ%/raw/Devuan
 REM ## UAC Check 
 NET SESSION >NUL 2>&1
  if %errorLevel% == 0 (
