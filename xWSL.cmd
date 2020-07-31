@@ -63,8 +63,9 @@ REM ## Configure
 %GO% "update-locale LC_ALL=en_US.UTF-8 LANGUAGE=en_US.UTF-8 LANG=en_US.UTF-8 ; dpkg-reconfigure --frontend noninteractive locales"
 %GO% "cd /tmp ; git clone -b Devuan --depth=1 https://github.com/%GITORG%/%GITPRJ%.git"
 %GO% "cd /tmp ; wget -q %BASE%/deb/libc-dev-bin_2.30-8_amd64.deb ; wget -q %BASE%/deb/libc6-dev_2.30-8_amd64.deb ; apt-get -qq install ./libc-dev-bin_2.30-8_amd64.deb ./libc6-dev_2.30-8_amd64.deb"
-%GO% "apt-get -y install /tmp/xWSL/deb/gksu_2.0.2-9_amd64.deb ; /tmp/xWSL/deb/libgksu2-0_2.0.13_amd64.deb /tmp/xWSL/deb/libgnome-keyring0_3.12.0-1build1_amd64.deb /tmp/xWSL/deb/libgnome-keyring-common_3.12.0-1build1_all.deb /tmp/xWSL/deb/xrdp_0.9.9-1_amd64.deb /tmp/xWSL/deb/xorgxrdp_0.2.9-1_amd64.deb /tmp/xWSL/deb/wslu_3.1.1-1_all.deb dialog elogind libelogind0 libpam-elogind --no-install-recommends ; apt-get -y remove rsyslog  ; apt-mark hold xorgxrdp xrdp"
-%GO% "DEBIAN_FRONTEND=noninteractive apt-get -y install tilix xdg-utils avahi-daemon libnss-mdns binutils putty synaptic pulseaudio-utils pulseaudio mesa-utils bzip2 p7zip-full unar unzip zip extremetuxracer distro-info-data lsb-release dumb-init --no-install-recommends"
+%GO% "DEBIAN_FRONTEND=noninteractive apt-get -y install /tmp/xWSL/deb/gksu_2.0.2-9_amd64.deb /tmp/xWSL/deb/libgksu2-0_2.0.13_amd64.deb /tmp/xWSL/deb/libgnome-keyring0_3.12.0-1build1_amd64.deb /tmp/xWSL/deb/libgnome-keyring-common_3.12.0-1build1_all.deb /tmp/xWSL/deb/xrdp_0.9.9-1_amd64.deb /tmp/xWSL/deb/xorgxrdp_0.2.9-1_amd64.deb /tmp/xWSL/deb/wslu_3.1.1-1_all.deb --no-install-recommends ; apt-mark hold xorgxrdp xrdp"
+%GO% "DEBIAN_FRONTEND=noninteractive apt-get -y install dialog elogind libelogind0 libpam-elogind distro-info-data lsb-release dumb-init inetutils-syslogd xdg-utils avahi-daemon libnss-mdns binutils putty synaptic pulseaudio-utils pulseaudio mesa-utils bzip2 p7zip-full unar unzip zip extremetuxracer --no-install-recommends"
+%GO% "DEBIAN_FRONTEND=noninteractive apt-get -y install tilix --no-install-recommends" 
 
 REM ## Extras go here
 REM %GO% "apt-get -y install pithos"
