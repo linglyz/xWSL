@@ -64,7 +64,7 @@ REM ## Configure
 %GO% "cd /tmp ; git clone --depth=1 https://github.com/%GITORG%/%GITPRJ%.git"
 %GO% "cd /tmp ; wget -q %BASE%/deb/libc-dev-bin_2.30-8_amd64.deb ; wget -q %BASE%/deb/libc6-dev_2.30-8_amd64.deb ; apt-get -qq install ./libc-dev-bin_2.30-8_amd64.deb ./libc6-dev_2.30-8_amd64.deb"
 %GO% "DEBIAN_FRONTEND=noninteractive apt-get -y install /tmp/xWSL/deb/gksu_2.0.2-9_amd64.deb /tmp/xWSL/deb/libgksu2-0_2.0.13_amd64.deb /tmp/xWSL/deb/libgnome-keyring0_3.12.0-1build1_amd64.deb /tmp/xWSL/deb/libgnome-keyring-common_3.12.0-1build1_all.deb /tmp/xWSL/deb/xrdp_0.9.9-1_amd64.deb /tmp/xWSL/deb/xorgxrdp_0.2.9-1_amd64.deb /tmp/xWSL/deb/wslu_3.1.1-1_all.deb dialog elogind libelogind0 libpam-elogind --no-install-recommends ; apt-get -y remove rsyslog  ; apt-mark hold xorgxrdp xrdp"
-%GO% "DEBIAN_FRONTEND=noninteractive apt-get -y install xdg-utils kde-plasma-desktop kinfocenter kwin-x11 ssh avahi-daemon libnss-mdns binutils systemsettings gnome-terminal putty mousepad synaptic kde-config-gtk-style-preview breeze-gtk-theme inetutils-syslogd kmix pulseaudio-utils pulseaudio mesa-utils ntp ksysguard ksysguard-data kmenuedit kde-config-gtk-style ark bzip2 p7zip-full unar unzip zip flameshot kolourpaint extremetuxracer distro-info-data lsb-release dumb-init --no-install-recommends"
+%GO% "DEBIAN_FRONTEND=noninteractive apt-get -y install tilix xdg-utils avahi-daemon libnss-mdns binutils putty synaptic pulseaudio-utils pulseaudio mesa-utils bzip2 p7zip-full unar unzip zip extremetuxracer distro-info-data lsb-release dumb-init --no-install-recommends"
 
 REM ## Extras go here
 REM %GO% "apt-get -y install pithos"
@@ -74,10 +74,9 @@ REM ## Customize
 %GO% "sed -i 's/#Port 22/Port %SSHPRT%/g' /etc/ssh/sshd_config"
 %GO% "sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config"
 %GO% "sed -i 's/thinclient_drives/.xWSL/g' /etc/xrdp/sesman.ini"
-%GO% "sed -i 's/forceFontDPI=0/forceFontDPI=%LINDPI%/g' /tmp/xWSL/dist/etc/skel/.config/kcmfonts"
+REM %GO% "sed -i 's/forceFontDPI=0/forceFontDPI=%LINDPI%/g' /tmp/xWSL/dist/etc/skel/.config/kcmfonts"
 %GO% "sed -i 's/#enable-dbus=yes/enable-dbus=no/g' /etc/avahi/avahi-daemon.conf ; sed -i 's/#host-name=foo/host-name=%COMPUTERNAME%-%DISTRO%/g' /etc/avahi/avahi-daemon.conf"
 %GO% "cp /mnt/c/Windows/Fonts/*.ttf /usr/share/fonts/truetype ; rm -rf /etc/pam.d/systemd-user ; rm -rf /etc/systemd ; rm -rf /usr/share/icons/breeze_cursors ; rm -rf /usr/share/icons/Breeze_Snow/cursors ; ssh-keygen -A ; adduser xrdp ssl-cert"
-%GO% "rm /usr/lib/x86_64-linux-gnu/libexec/kscreenlocker_greet ; strip --remove-section=.note.ABI-tag /usr/lib/x86_64-linux-gnu/libQt5Core.so.5 ; apt-get -qq remove udev"
 %GO% "mv /usr/bin/pkexec /usr/bin/pkexec.orig ; echo gksudo -k -S -g \$1 > /usr/bin/pkexec ; chmod 755 /usr/bin/pkexec"
 %GO% "chmod 644 /tmp/xWSL/dist/etc/wsl.conf"
 %GO% "chmod 644 /tmp/xWSL/dist/var/lib/xrdp-pulseaudio-installer/*.so"
@@ -85,9 +84,6 @@ REM ## Customize
 %GO% "chmod 644 /tmp/xWSL/dist/etc/profile.d/WinNT.sh"
 %GO% "chmod 644 /tmp/xWSL/dist/etc/xrdp/xrdp.ini"
 %GO% "cp -r /tmp/xWSL/dist/* /"
-
-REM ## Patch dependancies on shared memory 
-%GO% "dpkg -i --force-all /tmp/xWSL/deb/libkf5activitiesstats1_5.70.0-1_amd64.deb /tmp/xWSL/deb/kactivitymanagerd_5.17.5-2_amd64.deb /tmp/xWSL/deb/libkscreenlocker5_5.17.5-9wsl_amd64.deb /tmp/xWSL/deb/kde-config-screenlocker_5.17.5-9wsl_amd64.deb ; apt-mark hold kactivitymanagerd libkf5activitiesstats1 libkscreenlocker5 kde-config-screenlocker"
 
 REM ## Install Mozilla
 %GO% "echo deb http://downloads.sourceforge.net/project/ubuntuzilla/mozilla/apt all main >> /etc/apt/sources.list"
