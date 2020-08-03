@@ -53,29 +53,36 @@ IF NOT EXIST %TEMP%\excludeWSL.ps1 POWERSHELL.EXE -Command "wget %BASE%/excludeW
 POWERSHELL.EXE  -executionpolicy bypass -command "%TEMP%\excludeWSL.ps1"
 
 REM ## Configure
-%GO% "cd /tmp ; wget -q http://deb.devuan.org/devuan/pool/main/d/devuan-keyring/devuan-keyring_2017.10.03_all.deb ; wget -q http://ftp.br.debian.org/debian/pool/main/c/ca-certificates/ca-certificates_20200601~deb9u1_all.deb ; wget -q http://ftp.br.debian.org/debian/pool/main/o/openssl/openssl_1.1.0l-1~deb9u1_amd64.deb ; wget -q http://ftp.br.debian.org/debian/pool/main/o/openssl/libssl1.1_1.1.0l-1~deb9u1_amd64.deb"
-%GO% "cd /tmp ; dpkg -i --force-all ./devuan-keyring_2017.10.03_all.deb ./ca-certificates_20200601~deb9u1_all.deb ./openssl_1.1.0l-1~deb9u1_amd64.deb ./libssl1.1_1.1.0l-1~deb9u1_amd64.deb" > NUL
-%GO% "echo deb     http://deb.devuan.org/merged chimaera main >  /etc/apt/sources.list ; 
-%GO% "echo deb-src http://deb.devuan.org/merged chimaera main >> /etc/apt/sources.list"
-%GO% "cd /tmp ; apt-get update ; touch /etc/mtab ; wget -q %BASE%/deb/libc6_2.30-8_amd64.deb ; wget -q %BASE%/deb/libc-bin_2.30-8_amd64.deb ; apt-get -qq install ./libc6_2.30-8_amd64.deb ./libc-bin_2.30-8_amd64.deb ; apt-mark hold libc6"
-%GO% "cd /tmp ; apt-get -y install base-files dirmngr git --no-install-recommends ; wget -q %BASE%/deb/locales_2.30-8_all.deb ; apt-get -y install ./locales_2.30-8_all.deb"
+%GO% "touch /etc/mtab ; touch /etc/fstab ; cd /tmp ; wget -q http://deb.devuan.org/devuan/pool/main/d/devuan-keyring/devuan-keyring_2017.10.03_all.deb ; wget -q http://mirrors.kernel.org/ubuntu/pool/main/u/ubuntu-keyring/ubuntu-keyring_2020.02.11.2_all.deb ; wget -q http://ftp.ca.debian.org/debian/pool/main/c/ca-certificates/ca-certificates_20200601~deb9u1_all.deb ; wget -q http://ftp.ca.debian.org/debian/pool/main/o/openssl/openssl_1.1.0l-1~deb9u1_amd64.deb ; wget -q http://ftp.ca.debian.org/debian/pool/main/o/openssl/libssl1.1_1.1.0l-1~deb9u1_amd64.deb ; wget -q http://ftp.ca.debian.org/debian/pool/main/libj/libjpeg-turbo/libjpeg62-turbo_2.0.5-1.1_amd64.deb"
+%GO% "cd /tmp ; dpkg -i --force-all ./devuan-keyring_2017.10.03_all.deb ./ubuntu-keyring_2020.02.11.2_all.deb ./ca-certificates_20200601~deb9u1_all.deb ./openssl_1.1.0l-1~deb9u1_amd64.deb ./libssl1.1_1.1.0l-1~deb9u1_amd64.deb ./libjpeg62-turbo_2.0.5-1.1_amd64.deb" > NUL
+
+REM Devuan Chimaera (Bullseye)
+%GO% "echo deb http://deb.devuan.org/merged chimaera main >  /etc/apt/sources.list" 
+
+REM Ubuntu 20.04 (Focal)
+REM %GO% "echo deb http://archive.ubuntu.com/ubuntu/ focal main restricted universe multiverse           >  /etc/apt/sources.list"
+REM %GO% "echo deb http://archive.ubuntu.com/ubuntu/ focal-updates main restricted universe multiverse  >>  /etc/apt/sources.list"
+REM %GO% "echo deb http://archive.ubuntu.com/ubuntu/ focal-security main restricted universe multiverse >>  /etc/apt/sources.list"
+
+%GO% "cd /tmp ; apt-get update ; wget -q %BASE%/deb/libc6_2.30-8_amd64.deb ; wget -q %BASE%/deb/libc6-dev_2.30-8_amd64.deb ; wget -q %BASE%/deb/libc-bin_2.30-8_amd64.deb ; wget -q %BASE%/deb/libc-dev-bin_2.30-8_amd64.deb ; wget -q %BASE%/deb/libcrypt1_4.4.16-1_amd64.deb ; wget -q %BASE%/deb/libcrypt-dev_4.4.16-1_amd64.deb ; wget -q %BASE%/deb/libc-l10n_2.30-8_all.deb ; wget -q %BASE%/deb/locales_2.30-8_all.deb"
+%GO% "cd /tmp ; apt-get -qq install ./libc6_2.30-8_amd64.deb ./libc6-dev_2.30-8_amd64.deb ./libc-bin_2.30-8_amd64.deb ./libc-dev-bin_2.30-8_amd64.deb ./libcrypt1_4.4.16-1_amd64.deb ./libcrypt-dev_4.4.16-1_amd64.deb ./libc-l10n_2.30-8_all.deb ./locales_2.30-8_all.deb ; apt-mark hold libc6"
+%GO% "cd /tmp ; apt-get -y install base-files dirmngr git --no-install-recommends"
 %GO% "DEBIAN_FRONTEND=noninteractive apt-get -y dist-upgrade --no-install-recommends"
 %GO% "update-locale LC_ALL=en_US.UTF-8 LANGUAGE=en_US.UTF-8 LANG=en_US.UTF-8 ; dpkg-reconfigure --frontend noninteractive locales"
 %GO% "cd /tmp ; git clone -b Devuan --depth=1 https://github.com/%GITORG%/%GITPRJ%.git"
-%GO% "cd /tmp ; wget -q %BASE%/deb/libc-dev-bin_2.30-8_amd64.deb ; wget -q %BASE%/deb/libc6-dev_2.30-8_amd64.deb ; apt-get -qq install ./libc-dev-bin_2.30-8_amd64.deb ./libc6-dev_2.30-8_amd64.deb"
 %GO% "DEBIAN_FRONTEND=noninteractive apt-get -y install /tmp/xWSL/deb/gksu_2.0.2-9_amd64.deb /tmp/xWSL/deb/libgksu2-0_2.0.13_amd64.deb /tmp/xWSL/deb/libgnome-keyring0_3.12.0-1build1_amd64.deb /tmp/xWSL/deb/libgnome-keyring-common_3.12.0-1build1_all.deb /tmp/xWSL/deb/xrdp_0.9.9-1_amd64.deb /tmp/xWSL/deb/xorgxrdp_0.2.9-1_amd64.deb /tmp/xWSL/deb/wslu_3.1.1-1_all.deb --no-install-recommends ; apt-mark hold xorgxrdp xrdp"
-%GO% "DEBIAN_FRONTEND=noninteractive apt-get -y install dialog elogind libelogind0 libpam-elogind distro-info-data lsb-release dumb-init inetutils-syslogd xdg-utils avahi-daemon libnss-mdns binutils putty synaptic pulseaudio-utils pulseaudio mesa-utils bzip2 p7zip-full unar unzip zip extremetuxracer tilix --no-install-recommends"
-%GO% "DEBIAN_FRONTEND=noninteractive apt-get -y install xfce4-terminal xfce4-whiskermenu-plugin pulseaudio xfce4-pulseaudio-plugin libatkmm-1.6-1v5 libcairomm-1.0-1v5 libcanberra-gtk3-0 libcanberra-gtk3-module libglibmm-2.4-1v5 libgtkmm-3.0-1v5 libpangomm-1.4-1v5 libsigc++-2.0-0v5 pavucontrol xfwm4 xfce4-panel xfce4-session xfce4-settings dmz-cursor-theme thunar thunar-volman thunar-archive-plugin x11-apps x11-session-utils x11-xserver-utils xfdesktop4 xfce4-screenshooter libdbus-glib-1-2 libsmbclient gigolo gvfs-fuse gvfs-backends gvfs-bin at-spi2-core mtpaint mousepad evince xarchiver binutils lhasa lrzip lzip lzop ncompress zip unzip adapta-gtk-theme papirus-icon-theme synaptic gconf-defaults-service --no-install-recommends" 
+%GO% "DEBIAN_FRONTEND=noninteractive apt-get -y install dialog distro-info-data lsb-release dumb-init inetutils-syslogd xdg-utils avahi-daemon libnss-mdns binutils putty synaptic pulseaudio-utils pulseaudio mesa-utils bzip2 p7zip-full unar unzip zip --no-install-recommends"
+%GO% "DEBIAN_FRONTEND=noninteractive apt-get -y install xfce4-terminal xfce4-whiskermenu-plugin pulseaudio xfce4-pulseaudio-plugin libatkmm-1.6-1v5 libcairomm-1.0-1v5 libcanberra-gtk3-0 libcanberra-gtk3-module libglibmm-2.4-1v5 libgtkmm-3.0-1v5 libpangomm-1.4-1v5 libsigc++-2.0-0v5 pavucontrol xfwm4 xfce4-panel xfce4-session xfce4-settings dmz-cursor-theme thunar thunar-volman thunar-archive-plugin x11-apps x11-session-utils x11-xserver-utils xfdesktop4 xfce4-screenshooter dbus-x11 libdbus-glib-1-2 libsmbclient gigolo gvfs-fuse gvfs-backends gvfs-bin at-spi2-core mtpaint mousepad evince xarchiver binutils lhasa lrzip lzip lzop ncompress zip unzip adapta-gtk-theme papirus-icon-theme synaptic gconf-defaults-service --no-install-recommends" 
 
 REM ## Extras go here
-REM %GO% "apt-get -y install pithos"
+REM %GO% "apt-get -y install extremetuxracer tilix"
 
 REM ## Customize
+REM %GO% "sed -i 's/forceFontDPI=0/forceFontDPI=%LINDPI%/g' /tmp/xWSL/dist/etc/skel/.config/kcmfonts"
 %GO% "sed -i 's/port=3389/port=%RDPPRT%/g' /tmp/xWSL/dist/etc/xrdp/xrdp.ini ; cp /tmp/xWSL/dist/etc/xrdp/xrdp.ini /etc/xrdp/xrdp.ini"
 %GO% "sed -i 's/#Port 22/Port %SSHPRT%/g' /etc/ssh/sshd_config"
 %GO% "sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config"
 %GO% "sed -i 's/thinclient_drives/.xWSL/g' /etc/xrdp/sesman.ini"
-REM %GO% "sed -i 's/forceFontDPI=0/forceFontDPI=%LINDPI%/g' /tmp/xWSL/dist/etc/skel/.config/kcmfonts"
 %GO% "sed -i 's/#enable-dbus=yes/enable-dbus=no/g' /etc/avahi/avahi-daemon.conf ; sed -i 's/#host-name=foo/host-name=%COMPUTERNAME%-%DISTRO%/g' /etc/avahi/avahi-daemon.conf"
 %GO% "cp /mnt/c/Windows/Fonts/*.ttf /usr/share/fonts/truetype ; rm -rf /etc/pam.d/systemd-user ; rm -rf /etc/systemd ; rm -rf /usr/share/icons/breeze_cursors ; rm -rf /usr/share/icons/Breeze_Snow/cursors ; ssh-keygen -A ; adduser xrdp ssl-cert"
 %GO% "mv /usr/bin/pkexec /usr/bin/pkexec.orig ; echo gksudo -k -S -g \$1 > /usr/bin/pkexec ; chmod 755 /usr/bin/pkexec"
