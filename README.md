@@ -15,6 +15,11 @@ xWSL is accessible from anywhere on your network, you connect to it via Microsof
 ```
 PowerShell -executionpolicy bypass -command "wget https://github.com/DesktopECHO/xWSL/raw/master/xWSL.cmd -UseBasicParsing -OutFile xWSL.cmd ; .\xWSL.cmd"
 ```
+OR (For Windows 10 2004 or higher)
+
+```
+PowerShell -executionpolicy bypass -command "wget https://github.com/DesktopECHO/xWSL/raw/master/xWSL2.cmd -UseBasicParsing -OutFile xWSL.cmd ; .\xWSL.cmd"
+```
 
 You will be asked a few questions:
 
@@ -56,6 +61,12 @@ Upon completion you'll be logged into an attractive and fully functional XFCE4 d
    - Enter your Windows credentials when prompted
 
    Reboot your PC.  xWSL will automatically start at boot, no need to login to Windows.
+   
+**Convert to WSL2 Virtual Machine:** - For xWSL on WSL1
+-  xWSL will convert easily to WSL2.  Only one additional adjustment is necessary; change the hostname in the .RDP connection file to point at the WSL2 instance.  First convert the instance:
+    ```wsl --set-version [DistroName] 2```
+- Assuming we're using the default distro name of ```xWSL``` (use whatever name you assigned to the distro)  Right click the .RDP file in Windows, click Edit.  Change the Computer name to your Windows hostname plus **```-xWSL.local```**  Your WSL2 instance resolves seamlessly using multicast DNS  
+- For example, if the current value is ```LAPTOP:3399```, change it to ```LAPTOP-xwsl.local:3399``` and save the RDP connection file.  
 
 **Quirks Addressed and other interesting tidbits:**
 - WSL1 Has issues with the latest libc6 library.  The package is being held until fixes from MS are released over Windows Update.  Unmark and update libc6 after MS releases the update.
